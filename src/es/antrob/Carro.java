@@ -12,7 +12,7 @@ package es.antrob;
  */
 public class Carro {
 	
-	static private final double consumo=5.5; // litros por 100 klm
+	static private final double Consumo=5.5; // litros por 100 km
 	
 	private double quantidadeCombustivel;	// quantidade de combustível no depósito (unidade litros)
 	private double capacidadeDeposito;		// capacidade do depósito em termos de combustível (unidade litros)
@@ -42,7 +42,7 @@ public class Carro {
 	 * @return retorna o número de litros gastos por cada 100 Klm
 	 */
 	public static double getConsumo() {
-		return consumo;
+		return Consumo;
 	}
 
 	/**
@@ -74,14 +74,23 @@ public class Carro {
 	 * definindo a quantidade a abastecer 
 	 *  
 	 * @param quantidade - número de litros a introduzir no depósito
+	 * @return retorna a quantidade de litros metida no depósito
 	 */
-	public void meterCombustivel( double quantidade) { 		
+	public double meterCombustivel( double quantidade) { 		
 		
+		double litrosAdicionados = 0;
 		// Devia testar se Transborda o depósito
 		// Podia retornar os Litros Metidos 
-		quantidadeCombustivel = quantidadeCombustivel + quantidade;
-		
-		
+		if(quantidadeCombustivel > this.capacidadeDeposito) {
+			System.out.println("Vai Transbordar");
+		}
+		else {
+			quantidadeCombustivel = quantidadeCombustivel + quantidade;
+			litrosAdicionados += quantidade;
+		}
+			
+		return litrosAdicionados;
+
 	}
 	
 	
@@ -109,21 +118,26 @@ public class Carro {
 	 * 
 	 * @param distancia números de klm a percorrer com o carro
 	 *  
-	 * @return retorna se conseguiu percorrer a distancia ou não
+	 * @return retorna distancia realmente percorrida
 	 */
-	public boolean andar( double distancia ) {
+	public double andar( double distancia ) {
 		
 		// Verificar se tem combustivel para a distancia que se pretende andar 
 		if( distancia < obterAutonomia() ) {
 			
-			quantidadeCombustivel -= getConsumo() * (distancia / 100); 
-			return true;
+			quantidadeCombustivel = quantidadeCombustivel - getConsumo() * (distancia / 100); 
+			return distancia;
 		}
 		else {
 			
-			// Aqui ou simplesmente não percorre qualquer distancia 
-			// ou anda até parar porque fica sem combustível 
-			return false;
+			// Anda até parar porque fica sem combustível 
+			
+			double distanciasPercorida = obterAutonomia();
+			quantidadeCombustivel = 0;
+			
+			
+			
+			return distanciasPercorida;
 		}
 			
 			
